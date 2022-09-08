@@ -32,7 +32,7 @@ mongoose.connect(
 // storage
 const Storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "../client/public/uploads");
+    cb(null, "../client/image-upload/public/uploads");
   },
   filename: (req, file, cb) => {
     cb(null, file.originalname);
@@ -43,8 +43,6 @@ const upload = multer({
   storage: Storage,
 });
 //schema
-const mongoose = require("mongoose");
-
 const ImageSchema = mongoose.Schema({
   name: {
     type: String,
@@ -100,4 +98,8 @@ app.get("/fetch/:id", function (req, res) {
       }
     }
   });
+});
+//listen
+app.listen(3003, () => {
+  console.log("listening on port 3003");
 });
