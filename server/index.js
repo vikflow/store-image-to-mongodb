@@ -33,7 +33,7 @@ mongoose.connect(
 // storage of image being uploaded
 const Storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "../client/image-upload/public/uploads");
+    cb(null, "../uploadimage/public/uploads");
   },
   filename: (req, file, cb) => {
     cb(null, file.originalname);
