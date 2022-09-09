@@ -15,6 +15,7 @@ app.use(bodyParser.json());
 
 app.use(express.json());
 
+//connection to database
 mongoose.connect(
   "mongodb://localhost:27017/imageDb",
   {
@@ -29,7 +30,7 @@ mongoose.connect(
     }
   }
 );
-// storage
+// storage of image being uploaded
 const Storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "../client/image-upload/public/uploads");
@@ -42,18 +43,19 @@ const Storage = multer.diskStorage({
 const upload = multer({
   storage: Storage,
 });
-//schema
+//Database schema
 const ImageSchema = mongoose.Schema({
   name: {
     type: String,
     required: true,
   },
   image: {
-    data: Buffer,
-    contentType: String,
+    type: String,
+    required: true,
   },
   id: {
     type: Number,
+    required: true,
   },
 });
 
@@ -63,9 +65,8 @@ module.exports = ImageModel = mongoose.model("imageModel", ImageSchema);
 app.post("/upload", upload.single("testImage"), (req, res) => {
   const saveImage = ImageModel({
     name: req.body.name,
-    img: {
-      contentType: "image/png",
-    },
+    image: req.file.originalname,
+    id: req.body.id,
   });
   saveImage
     .save()
@@ -99,7 +100,7 @@ app.get("/fetch/:id", function (req, res) {
     }
   });
 });
-//listen
+//listening on port 3003
 app.listen(3003, () => {
   console.log("listening on port 3003");
 });
